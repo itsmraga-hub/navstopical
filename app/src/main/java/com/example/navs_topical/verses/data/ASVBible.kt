@@ -1,37 +1,8 @@
 package com.example.navs_topical.verses.data
 import android.content.Context
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import kotlinx.serialization.Serializable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
-fun readJsonFile(fileName: String): String {
-    val classLoader = Thread.currentThread().contextClassLoader
-    if (classLoader != null) {
-        classLoader.getResourceAsStream(fileName)?.use { inputStream ->
-            BufferedReader(InputStreamReader(inputStream)).use { reader ->
-                return reader.readText()
-            }
-        } ?: throw IllegalArgumentException("File not found: $fileName")
-    }
-    throw IllegalArgumentException("Classloader not found")
-}
-
-
-
-fun loadJsonFromAssets(context: Context, fileName: String): String {
-    return context.assets.open(fileName).bufferedReader().use { it.readText() }
-}
-
-fun parseBibleData(context: Context): BibleData {
-    // Load JSON from assets
-    val jsonFile = loadJsonFromAssets(context, "asv.json")
-
-    // Parse JSON
-    val gson = Gson()
-    return gson.fromJson(jsonFile, BibleData::class.java)
-}
 
 
 @Serializable
