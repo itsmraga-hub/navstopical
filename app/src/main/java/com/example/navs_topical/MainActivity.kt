@@ -20,13 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.navs_topical.verses.data.readJsonFile
 import com.example.navs_topical.ui.HomeScreen
 import com.example.navs_topical.ui.theme.NavstopicalTheme
 import kotlinx.coroutines.delay
@@ -51,6 +51,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp() {
+//    var asvBible = readJsonFile("asv.json");
+//    println(asvBible);
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") { SplashScreen(navController) }
