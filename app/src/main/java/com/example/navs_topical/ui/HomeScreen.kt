@@ -32,28 +32,6 @@ import com.example.navs_topical.verses.data.readJsonFromAssets
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
-    // val asvBible = readJsonFile("asv.json");
-    // val json = context.assets.open("asv.json").bufferedReader().use { it.readText() }
-//    val inputStream = context.resources.openRawResource(R.raw.asv)
-//    val json = inputStream.bufferedReader().use { it.readText() }
-
-    // val asvBible = File("src/main/resources/asv.json").readText()
-//    // println(asvBible);
-//    val json = Json { ignoreUnknownKeys = true }
-//    val bibleData: BibleData = json.decodeFromString(asvBible)
-
-
-    // Access metadata
-//    println("Name: ${bibleData.metadata.name}")
-//    println("Year: ${bibleData.metadata.year}")
-
-    // Access verses
-
-//    bibleData.verses.forEach { verse ->
-//        println("Book: ${verse.book_name}, Chapter: ${verse.chapter}, Verse: ${verse.verse}")
-//        println("Text: ${verse.text}")
-//    }
-
     val context = LocalContext.current
     val jsonString = readJsonFromAssets(context, "asv.json")
     val asvBible = parseJsonToModel(jsonString)
