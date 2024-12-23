@@ -6,45 +6,6 @@ import kotlinx.serialization.Serializable
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-//
-//data class ASVBible(
-//    val metadata: Metadata,
-//    val verses: List<Verse>)
-//
-//
-//data class Metadata(
-//    val name: String,
-//    val shortName: String,
-//    val module: String,
-//    val year: String,
-//    val publisher: String?,
-//    val owner: String?,
-//    val description: String,
-//    val lang: String,
-//    val lang_short: String,
-//    val copyright: Int,
-//    val copyright_statement: String,
-//    val url: String?,
-//    val citation_limit: Int,
-//    val restrict: Int,
-//    val italics: Int,
-//    val strongs: Int,
-//    val red_letter: Int,
-//    val paragraph: Int,
-//    val official: Int,
-//    val research: Int,
-//    val module_version: String
-//)
-//
-//
-//data class Verse(
-//    val bookName: String,
-//    val book: Int,
-//    val chapter: Int,
-//    val verse: Int,
-//    val text: String,
-//)
-//
 fun readJsonFile(fileName: String): String {
     val classLoader = Thread.currentThread().contextClassLoader
     if (classLoader != null) {
