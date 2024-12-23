@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.navs_topical.verses.data.Verse
+import com.example.navs_topical.verses.data.newTestamentBooks
+import com.example.navs_topical.verses.data.oldTestamentBooks
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -27,6 +29,8 @@ fun BottomSheetComponent(
     verse: Verse,
     modifier: Modifier =Modifier) {
 
+    var newTestamentBooks = newTestamentBooks
+    var oldTestamentBooks = oldTestamentBooks
 
     ModalBottomSheet(onDismissRequest = { /*TODO*/
             dismissModal()
@@ -48,6 +52,8 @@ fun BottomSheetComponent(
             }) {
                 Text("Close")
             }
+            BookAndChapterSelector(books = newTestamentBooks)
+            BookAndChapterSelector(books = oldTestamentBooks)
             TextField(value = verse.verseTopic, onValueChange = {})
             TextField(value = verse.verseReference, onValueChange = {})
             TextField(value = verse.verseContent, onValueChange = {})
