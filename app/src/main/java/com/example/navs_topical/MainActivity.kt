@@ -26,8 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.navs_topical.verses.data.readJsonFile
-import com.example.navs_topical.ui.HomeScreen
+import com.example.navs_topical.ui.screens.HomeScreen
 import com.example.navs_topical.ui.theme.NavstopicalTheme
 import kotlinx.coroutines.delay
 
