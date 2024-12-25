@@ -2,21 +2,17 @@ package com.example.navs_topical.ui.screens.tabs
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
@@ -119,9 +115,11 @@ fun ASVBibleScreen(
                     testament = "Old Testament",
                     book = book,
                     books = testamentMap["Old Testament"]!!,
+                    chaptersPerBook = chaptersPerBook,
                     chaptersVisible = chaptersVisible,
                     bookVisible = bookVisible,
                     setBook = setBook,
+                    versesPerChapter = versesPerChapter,
                     modifier = Modifier
                         .padding(top = 128.dp)
                         .border(
@@ -141,6 +139,8 @@ fun ASVBibleScreen(
                     bookVisible = bookVisible,
                     wordVisible = wordVisible,
                     books = testamentMap["New Testament"]!!,
+                    chaptersPerBook = chaptersPerBook,
+                    versesPerChapter = versesPerChapter,
                     modifier = Modifier
                         .padding(top = 128.dp)
                 )
@@ -161,6 +161,8 @@ fun TestamentScreen(
     wordVisible: Boolean,
     books: List<String>,
     setBook: (String) -> Unit,
+    chaptersPerBook: Map<String, Int>,
+    versesPerChapter: Map<String, Map<Int, Int>>,
     modifier: Modifier = Modifier
 ) {
         LazyColumn (
@@ -183,30 +185,32 @@ fun TestamentScreen(
                     )
                 }
 
-                FlowRow(
-                    modifier = Modifier
-//                        .padding(8.dp)
-//                        .width(300.dp)
-//                        .height(400.dp)
-                        .wrapContentWidth(Alignment.Start)
-                        .wrapContentSize()
+                if (book === it) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalArrangement = Arrangement.SpaceAround,
+                        maxItemsInEachRow = 6,
+                        modifier = Modifier
+                            .wrapContentWidth(Alignment.Start)
+                            .wrapContentSize()
 
-                ) {
-                    for (item in 1..20) {
-                        Button(
-                            onClick = {  },
-                            colors = ButtonDefaults.buttonColors(Color.Transparent),
-                            modifier = Modifier.padding(0.dp),
+                    ) {
+                        for (item in 1..chaptersPerBook[it]!!) {
+                            Button(
+                                onClick = {  },
+                                colors = ButtonDefaults.buttonColors(Color.Transparent),
+                                modifier = Modifier.padding(0.dp),
 
-                        ) {
-                            Text(
-                                text = "$item",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                modifier = Modifier
-                                    .padding(0.dp),
-                                textAlign = TextAlign.Center,
-                            )
+                                ) {
+                                Text(
+                                    text = "$item",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    modifier = Modifier
+                                        .padding(0.dp),
+                                    textAlign = TextAlign.Center,
+                                )
+                            }
                         }
                     }
                 }
