@@ -62,6 +62,7 @@ fun ASVBibleScreen(
                 }
         }
     var selectedTabIndex by remember { mutableIntStateOf(0) } // Track the selected tab
+    var selectedChapter by remember { mutableIntStateOf(0) } // Track the selected tab
 
     val bibleMap = organizeBooksByTestament(bible.verses);
     val testamentMap = groupBooksByTestament(bible.verses);
@@ -74,17 +75,17 @@ fun ASVBibleScreen(
     var selectedBookChapters by remember { mutableStateOf(HashMap<String, String>()) }
     var selectedBookVerses by remember { mutableStateOf(listOf<BibleVerse>()) }
 
-    val setBook: (String) -> Unit = { bk ->
-        book = bk
-        selectedBookVerses = bible.verses.filter { verse ->
-            verse.book_name == bk
+    val setBook: (String, Int?) -> Unit = { s: String, i: Int? ->
+        book = if (book === s) {
+            ""
+        } else {
+            s
         }
-
-
-        println("$chaptersPerBook")
-        println("$versesPerChapter")
-
-        println("$selectedBookVerses")
+        if (i != null) {
+            if (i >= 0) {
+                selectedChapter = i
+            }
+        }
     }
 
     val tabs = listOf("Old Testament", "New Testament");
@@ -116,6 +117,7 @@ fun ASVBibleScreen(
                     book = book,
                     books = testamentMap["Old Testament"]!!,
                     chaptersPerBook = chaptersPerBook,
+                    chapter = selectedChapter,
                     chaptersVisible = chaptersVisible,
                     bookVisible = bookVisible,
                     setBook = setBook,
@@ -135,6 +137,7 @@ fun ASVBibleScreen(
                     testament = "New Testament",
                     book = book,
                     setBook = setBook,
+                    chapter = selectedChapter,
                     chaptersVisible = chaptersVisible,
                     bookVisible = bookVisible,
                     wordVisible = wordVisible,
@@ -156,21 +159,23 @@ fun ASVBibleScreen(
 fun TestamentScreen(
     testament: String,
     book: String,
+    chapter: Int = 0,
     chaptersVisible: Boolean,
     bookVisible: Boolean,
     wordVisible: Boolean,
     books: List<String>,
-    setBook: (String) -> Unit,
+    setBook: (String, Int) -> Unit,
     chaptersPerBook: Map<String, Int>,
     versesPerChapter: Map<String, Map<Int, Int>>,
     modifier: Modifier = Modifier
 ) {
+    if (chapter == 0) {
         LazyColumn (
             modifier = Modifier.padding(top = 48.dp)
         ) {
             items(books) {
                 Button(
-                    onClick = { setBook(it) },
+                    onClick = { setBook(it, 0) },
                     colors = ButtonDefaults.buttonColors(Color.Transparent),
                     modifier = Modifier.padding(0.dp)
 
@@ -187,7 +192,7 @@ fun TestamentScreen(
 
                 if (book === it) {
                     FlowRow(
-                        horizontalArrangement = Arrangement.Center,
+                        horizontalArrangement = Arrangement.Start,
                         verticalArrangement = Arrangement.SpaceAround,
                         maxItemsInEachRow = 6,
                         modifier = Modifier
@@ -197,7 +202,9 @@ fun TestamentScreen(
                     ) {
                         for (item in 1..chaptersPerBook[it]!!) {
                             Button(
-                                onClick = {  },
+                                onClick = {
+                                    setBook(it, item)
+                                },
                                 colors = ButtonDefaults.buttonColors(Color.Transparent),
                                 modifier = Modifier.padding(0.dp),
 
@@ -216,8 +223,12 @@ fun TestamentScreen(
                 }
             }
         }
+    } else {
+        Text(
+            text = "Verse appears here"
+        )
     }
-//}
+}
 
 
 fun setBibleBook(book: String) {
