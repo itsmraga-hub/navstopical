@@ -51,6 +51,20 @@ fun ASVBibleScreen(
     modifier: Modifier = Modifier
 ) {
 
+    val chaptersPerBook = bible.verses
+        .groupBy { it.book_name }
+        .mapValues { (_, verses) ->
+            verses.map { it.chapter }.distinct().count()
+        }
+
+    val versesPerChapter = bible.verses
+        .groupBy { it.book_name } // Group by book name
+        .mapValues { (_, versesInBook) ->
+            versesInBook.groupBy { it.chapter } // Group by chapter within each book
+                .mapValues { (_, versesInChapter) ->
+                    versesInChapter.count() // Count the verses in each chapter
+                }
+        }
     var selectedTabIndex by remember { mutableIntStateOf(0) } // Track the selected tab
 
     val bibleMap = organizeBooksByTestament(bible.verses);
@@ -61,10 +75,20 @@ fun ASVBibleScreen(
     var bookVisible by remember { mutableStateOf(false) }
     var wordVisible by remember { mutableStateOf(false) }
 
+    var selectedBookChapters by remember { mutableStateOf(HashMap<String, String>()) }
+    var selectedBookVerses by remember { mutableStateOf(listOf<BibleVerse>()) }
+
     val setBook: (String) -> Unit = { bk ->
         book = bk
-        println("bk $bk")
-        println("book $book")
+        selectedBookVerses = bible.verses.filter { verse ->
+            verse.book_name == bk
+        }
+
+
+        println("$chaptersPerBook")
+        println("$versesPerChapter")
+
+        println("$selectedBookVerses")
     }
 
     val tabs = listOf("Old Testament", "New Testament");
@@ -172,7 +196,7 @@ fun TestamentScreen(
                         Button(
                             onClick = {  },
                             colors = ButtonDefaults.buttonColors(Color.Transparent),
-                            modifier = Modifier.padding(0.dp)
+                            modifier = Modifier.padding(0.dp),
 
                         ) {
                             Text(
@@ -181,8 +205,7 @@ fun TestamentScreen(
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 modifier = Modifier
                                     .padding(0.dp),
-                                textAlign = TextAlign.Center
-                                // modifier = Modifier.alignBy(Alignment.Center)
+                                textAlign = TextAlign.Center,
                             )
                         }
                     }
