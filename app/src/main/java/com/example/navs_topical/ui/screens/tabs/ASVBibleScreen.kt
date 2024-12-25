@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -64,40 +65,59 @@ fun ASVBibleScreen(
     var selectedTabIndex by remember { mutableIntStateOf(0) } // Track the selected tab
     var selectedChapter by remember { mutableIntStateOf(0) } // Track the selected tab
 
-    val bibleMap = organizeBooksByTestament(bible.verses);
-    val testamentMap = groupBooksByTestament(bible.verses);
+    val bibleMap = organizeBooksByTestament(bible.verses)
+    val testamentMap = groupBooksByTestament(bible.verses)
 
-    var book by remember { mutableStateOf("Genesis") }
-    var chaptersVisible by remember { mutableStateOf(false) }
-    var bookVisible by remember { mutableStateOf(false) }
-    var wordVisible by remember { mutableStateOf(false) }
+    var book by remember { mutableStateOf("") }
+    val chaptersVisible by remember { mutableStateOf(false) }
+    val bookVisible by remember { mutableStateOf(false) }
+    val wordVisible by remember { mutableStateOf(false) }
+//    var selectedBookVerses by remember { mutableStateOf(listOf<BibleVerse>()) }
 
-    var selectedBookChapters by remember { mutableStateOf(HashMap<String, String>()) }
+//    var selectedBookChapters by remember { mutableStateOf(HashMap<String, String>()) }
     var selectedBookVerses by remember { mutableStateOf(listOf<BibleVerse>()) }
+    var selectedVerses by remember { mutableStateOf(listOf<BibleVerse>()) }
 
-    val setBook: (String, Int?) -> Unit = { s: String, i: Int? ->
-        book = if (book === s) {
+    println("testamentMap $testamentMap")
+    println("bibleMap $bibleMap")
+    val setBook: (String, Int?) -> Unit = { bk: String, i: Int? ->
+        println("i $i")
+        println("bk $bk")
+        println("book $book")
+        book = if (book === bk) {
             ""
         } else {
-            s
+            bk
         }
         if (i != null) {
             if (i >= 0) {
                 selectedChapter = i
+                selectedBookVerses = bible.verses.filter { verse ->
+                    verse.book_name == bk
+                }
+                selectedVerses = bible.verses
+                    .groupBy { it.book_name }[bk] ?: emptyList()
+                println("selectedBookVerses $selectedBookVerses")
+                println("selectedVerses $selectedVerses")
+
             }
         }
     }
 
-    val tabs = listOf("Old Testament", "New Testament");
+    val tabs = listOf("Old Testament", "New Testament")
     Box(modifier = modifier) {
         TabRow(
             selectedTabIndex = selectedTabIndex,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+
         ) {
             tabs.forEachIndexed { index, title ->
                 Tab(
                     selected = selectedTabIndex == index,
-                    onClick = { selectedTabIndex = index },
+                    onClick = {
+                        selectedTabIndex = index
+                        setBook("", 0)
+                              },
                     text = {
                         Text(
                             text = title,
@@ -113,7 +133,6 @@ fun ASVBibleScreen(
         when (selectedTabIndex) {
             0 -> {
                 TestamentScreen(
-                    testament = "Old Testament",
                     book = book,
                     books = testamentMap["Old Testament"]!!,
                     chaptersPerBook = chaptersPerBook,
@@ -121,6 +140,7 @@ fun ASVBibleScreen(
                     chaptersVisible = chaptersVisible,
                     bookVisible = bookVisible,
                     setBook = setBook,
+                    selectedBookVerses = selectedBookVerses,
                     versesPerChapter = versesPerChapter,
                     modifier = Modifier
                         .padding(top = 128.dp)
@@ -134,12 +154,12 @@ fun ASVBibleScreen(
 
             1 -> {
                 TestamentScreen(
-                    testament = "New Testament",
                     book = book,
                     setBook = setBook,
                     chapter = selectedChapter,
                     chaptersVisible = chaptersVisible,
                     bookVisible = bookVisible,
+                    selectedBookVerses = selectedBookVerses,
                     wordVisible = wordVisible,
                     books = testamentMap["New Testament"]!!,
                     chaptersPerBook = chaptersPerBook,
@@ -151,18 +171,17 @@ fun ASVBibleScreen(
         }
     }
 }
-// Compare this snippet from app/src/main/java/com/example/navs_topical/ui/screens/tabs/SettingsScreen.kt:
 
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TestamentScreen(
-    testament: String,
     book: String,
     chapter: Int = 0,
     chaptersVisible: Boolean,
     bookVisible: Boolean,
     wordVisible: Boolean,
+    selectedBookVerses: List<BibleVerse>,
     books: List<String>,
     setBook: (String, Int) -> Unit,
     chaptersPerBook: Map<String, Int>,
@@ -224,15 +243,17 @@ fun TestamentScreen(
             }
         }
     } else {
-        Text(
-            text = "Verse appears here"
-        )
+        LazyColumn(
+            modifier = Modifier.padding(top = 54.dp)
+        ) {
+            items(selectedBookVerses) { verse ->
+                Row {
+                    Text(text = "${verse.verse}", modifier = Modifier.weight(1f))
+                    Text(text = verse.text, modifier = Modifier.weight(8f))
+                }
+            }
+        }
     }
-}
-
-
-fun setBibleBook(book: String) {
-
 }
 
 @Preview(showBackground = true)
