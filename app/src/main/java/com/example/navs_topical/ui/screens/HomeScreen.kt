@@ -28,6 +28,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -55,18 +56,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val jsonString = readJsonFromAssets(context, "asv.json")
     val asvBible = parseJsonToModel(jsonString)
-    var selectedTab by remember { mutableStateOf(0) }
-    println("jsonSting: $jsonString")
-    println("asvBible: $asvBible")
-    println("asvBible Metadata: ${asvBible.metadata}")
-    println("asvBible Name: ${asvBible.metadata.name}")
-    println("asvBible Verses: ${asvBible.verses}")
-    println("asvBible book: ${asvBible.verses[0].book}")
-    println("asvBible Book Name: ${asvBible.verses[0].book_name}")
-    println("asvBible Verse: ${asvBible.verses[0].verse}")
-    println("asvBible Text: ${asvBible.verses[0].text}")
-    println("asvBible Chapter: ${asvBible.verses[0].chapter}")
-
+    var selectedTab by remember { mutableIntStateOf(0) }
 
     // println(asvBible?.metadata.name);
     val sheetState = rememberModalBottomSheetState()
@@ -108,30 +98,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
             ) {
                 val tabs = listOf("My Verses", "TMS", "ASV", "Settings", "More")
-
-                // Render the tabs in a Row
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    horizontalArrangement = Arrangement.SpaceAround
-//                ) {
-//                    tabs.forEachIndexed { index, tab ->
-//                        TextButton(
-//                            onClick = { selectedTab = index },
-//                            colors = ButtonDefaults.textButtonColors(
-//                                contentColor = if (selectedTab == index) MaterialTheme.colorScheme.primary else Color.Gray
-//                            )
-//                        ) {
-//                            Text(
-//                                text = tab,
-//                                textAlign = TextAlign.Center,
-//                                color = if (selectedTab == index) MaterialTheme.colorScheme.primary else Color.Gray
-//                            )
-//                        }
-//                    }
-//
-//                }
-
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -218,16 +184,19 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         }
         when (selectedTab) {
             0 -> {
-                ASVBibleScreen(bible = asvBible, modifier = Modifier.padding(16.dp))
+                MyVersesScreen(modifier = Modifier.padding(16.dp))
             }
             1 -> {
                 TMSScreen(modifier = Modifier.padding(16.dp))
             }
             2 -> {
-                MyVersesScreen(modifier = Modifier.padding(16.dp))
+                ASVBibleScreen(bible = asvBible, modifier = Modifier.padding(top = 64.dp, start = 8.dp, end = 8.dp))
             }
             3 -> {
                 SettingsScreen(modifier = Modifier.padding(16.dp))
+            }
+            4 -> {
+                Text("More")
             }
         }
     }
