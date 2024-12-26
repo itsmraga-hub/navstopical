@@ -1,7 +1,5 @@
 package com.example.navs_topical.ui.screens.tabs
 
-
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -48,7 +46,6 @@ fun BibleViewer(bible: BibleData, bookName: String, chapter: Int, modifier: Modi
                 if (index in verses.indices) {
                     val verse = verses[index]
 
-                    // Add book to displayedBooks set to display its header
                     displayedBooks.add(verse.book_name)
                 }
             }
@@ -62,7 +59,6 @@ fun BibleViewer(bible: BibleData, bookName: String, chapter: Int, modifier: Modi
             if (displayedBooks.contains(verse.book_name) &&
                 verses.indexOf(verse) == verses.indexOfFirst { it.book_name == verse.book_name }
             ) {
-                // Display book name header at the first verse of the book
                 Text(
                     text = verse.book_name,
                     style = MaterialTheme.typography.headlineLarge,
@@ -73,7 +69,6 @@ fun BibleViewer(bible: BibleData, bookName: String, chapter: Int, modifier: Modi
                 )
             }
 
-            // Display the verse
             SelectionContainer {
                 Text(text = "${verse.chapter}:${verse.verse} - ${verse.text}")
             }
