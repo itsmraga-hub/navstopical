@@ -58,7 +58,6 @@ fun BibleViewer(bible: BibleData, bookName: String, chapter: Int, modifier: Modi
         modifier = modifier,
         state = state
     ) {
-        // Iterate through all verses and conditionally add headers
         items(verses) { verse ->
             if (displayedBooks.contains(verse.book_name) &&
                 verses.indexOf(verse) == verses.indexOfFirst { it.book_name == verse.book_name }
