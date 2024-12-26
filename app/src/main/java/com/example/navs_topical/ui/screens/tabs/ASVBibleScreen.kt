@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
@@ -80,8 +81,7 @@ fun ASVBibleScreen(
 
     println("testamentMap $testamentMap")
     println("bibleMap $bibleMap")
-    val setBook: (String, Int?) -> Unit = { bk: String, i: Int? ->
-        println("i $i")
+    val setBook: (String) -> Unit = { bk: String ->
         println("bk $bk")
         println("book $book")
         book = if (book === bk) {
@@ -89,18 +89,11 @@ fun ASVBibleScreen(
         } else {
             bk
         }
-        if (i != null) {
-            if (i >= 0) {
-                selectedChapter = i
-                selectedBookVerses = bible.verses.filter { verse ->
-                    verse.book_name == bk
-                }
-                selectedVerses = bible.verses
-                    .groupBy { it.book_name }[bk] ?: emptyList()
-                println("selectedBookVerses $selectedBookVerses")
-                println("selectedVerses $selectedVerses")
+    }
 
-            }
+    val setChapter: (Int) -> Unit = { i: Int ->
+        if (i >= 0) {
+            selectedChapter = i
         }
     }
 
@@ -116,7 +109,8 @@ fun ASVBibleScreen(
                     selected = selectedTabIndex == index,
                     onClick = {
                         selectedTabIndex = index
-                        setBook("", 0)
+                        setBook("")
+                        setChapter(0)
                               },
                     text = {
                         Text(
@@ -133,6 +127,7 @@ fun ASVBibleScreen(
         when (selectedTabIndex) {
             0 -> {
                 TestamentScreen(
+                    bible = bible,
                     book = book,
                     books = testamentMap["Old Testament"]!!,
                     chaptersPerBook = chaptersPerBook,
@@ -140,6 +135,7 @@ fun ASVBibleScreen(
                     chaptersVisible = chaptersVisible,
                     bookVisible = bookVisible,
                     setBook = setBook,
+                    setChapter = setChapter,
                     selectedBookVerses = selectedBookVerses,
                     versesPerChapter = versesPerChapter,
                     modifier = Modifier
@@ -154,8 +150,10 @@ fun ASVBibleScreen(
 
             1 -> {
                 TestamentScreen(
+                    bible = bible,
                     book = book,
                     setBook = setBook,
+                    setChapter = setChapter,
                     chapter = selectedChapter,
                     chaptersVisible = chaptersVisible,
                     bookVisible = bookVisible,
@@ -176,6 +174,7 @@ fun ASVBibleScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TestamentScreen(
+    bible: BibleData,
     book: String,
     chapter: Int = 0,
     chaptersVisible: Boolean,
@@ -183,18 +182,20 @@ fun TestamentScreen(
     wordVisible: Boolean,
     selectedBookVerses: List<BibleVerse>,
     books: List<String>,
-    setBook: (String, Int) -> Unit,
+    setBook: (String) -> Unit,
+    setChapter: (Int) -> Unit,
     chaptersPerBook: Map<String, Int>,
     versesPerChapter: Map<String, Map<Int, Int>>,
     modifier: Modifier = Modifier
 ) {
+    println("Testament Screen book: $book")
     if (chapter == 0) {
         LazyColumn (
             modifier = Modifier.padding(top = 48.dp)
         ) {
             items(books) {
                 Button(
-                    onClick = { setBook(it, 0) },
+                    onClick = { setBook(it) },
                     colors = ButtonDefaults.buttonColors(Color.Transparent),
                     modifier = Modifier.padding(0.dp)
 
@@ -222,7 +223,7 @@ fun TestamentScreen(
                         for (item in 1..chaptersPerBook[it]!!) {
                             Button(
                                 onClick = {
-                                    setBook(it, item)
+                                    setChapter(item)
                                 },
                                 colors = ButtonDefaults.buttonColors(Color.Transparent),
                                 modifier = Modifier.padding(0.dp),
@@ -242,17 +243,14 @@ fun TestamentScreen(
                 }
             }
         }
-    } else {
-        LazyColumn(
-            modifier = Modifier.padding(top = 54.dp)
-        ) {
-            items(selectedBookVerses) { verse ->
-                Row {
-                    Text(text = "${verse.verse}", modifier = Modifier.weight(1f))
-                    Text(text = verse.text, modifier = Modifier.weight(8f))
-                }
-            }
-        }
+    }
+    if (chapter > 0) {
+        BibleViewer(
+            bible = bible,
+            bookName = book,
+            chapter = chapter,
+            modifier = Modifier.padding(top = 64.dp, bottom = 64.dp)
+        )
     }
 }
 
