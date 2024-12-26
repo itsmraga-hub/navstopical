@@ -39,6 +39,8 @@ fun BookAndChapterSelector(books: Map<String, Int> = oldTestamentBooks) {
     var selectedChapter by remember { mutableIntStateOf(1) }
     var expandedChapterDropdown by remember { mutableStateOf(false) }
 
+    println("selectedBook $selectedBook")
+    println("selectedChapter $selectedChapter")
     Column(modifier = Modifier.padding(16.dp)) {
         // Book Dropdown
         Text(text = "Select a Book", style = MaterialTheme.typography.titleMedium)

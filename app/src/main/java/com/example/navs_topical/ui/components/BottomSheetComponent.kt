@@ -52,7 +52,7 @@ fun BottomSheetComponent(
             }) {
                 Text("Close")
             }
-            BookAndChapterSelector(books = newTestamentBooks)
+            BookAndChapterSelector(books = newTestamentBooks + oldTestamentBooks)
             BookAndChapterSelector(books = oldTestamentBooks)
             TextField(value = verse.verseTopic, onValueChange = {})
             TextField(value = verse.verseReference, onValueChange = {})
