@@ -14,6 +14,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.navs_topical.verses.data.BibleData
 import com.example.navs_topical.verses.data.Verse
 import com.example.navs_topical.verses.data.newTestamentBooks
 import com.example.navs_topical.verses.data.oldTestamentBooks
@@ -27,6 +28,7 @@ fun BottomSheetComponent(
     scope: CoroutineScope,
     dismissModal: () -> Unit,
     verse: Verse,
+    bible: BibleData,
     modifier: Modifier =Modifier) {
 
     var newTestamentBooks = newTestamentBooks
@@ -52,8 +54,8 @@ fun BottomSheetComponent(
             }) {
                 Text("Close")
             }
-            BookAndChapterSelector(books = newTestamentBooks + oldTestamentBooks)
-            BookAndChapterSelector(books = oldTestamentBooks)
+            BookAndChapterSelector(bible = bible, books = newTestamentBooks + oldTestamentBooks)
+//            BookAndChapterSelector(bible = bible, books = oldTestamentBooks)
             TextField(value = verse.verseTopic, onValueChange = {})
             TextField(value = verse.verseReference, onValueChange = {})
             TextField(value = verse.verseContent, onValueChange = {})
