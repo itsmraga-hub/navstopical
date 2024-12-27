@@ -1,11 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.navs_topical"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.navs_topical"
@@ -71,4 +72,25 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("com.google.code.gson:gson:2.9.1")
 //    implementation("plugin.serialization:1.0.0")
+
+//    implementation("com.google.gms.google-services")
+    // Required when asking for permission to post notifications (starting in Android 13)
+    implementation("androidx.activity:activity-ktx:1.9.3")
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
+
+    implementation("com.google.android.material:material:1.12.0")
+
+    // Import the Firebase BoM (see: https://firebase.google.com/docs/android/learn-more#bom)
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+
+    // Firebase Cloud Messaging
+    implementation("com.google.firebase:firebase-messaging")
+
+    // For an optimal experience using FCM, add the Firebase SDK
+    // for Google Analytics. This is recommended, but not required.
+    implementation("com.google.firebase:firebase-analytics")
+
+    implementation("com.google.firebase:firebase-installations:18.0.0")
+
+    implementation("androidx.work:work-runtime:2.10.0")
 }
