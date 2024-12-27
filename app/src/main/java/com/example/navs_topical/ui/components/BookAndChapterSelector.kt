@@ -22,25 +22,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.navs_topical.verses.data.BibleData
+import com.example.navs_topical.verses.data.BibleVerse
 import com.example.navs_topical.verses.data.oldTestamentBooks
 
 
 @Composable
-fun BookAndChapterSelector(books: Map<String, Int> = oldTestamentBooks) {
+fun BookAndChapterSelector(books: Map<String, Int> = oldTestamentBooks, bible: BibleData) {
     // Books and chapter counts
 //    val books = oldTestamentBooks
 
     // States for book selection
     var selectedBook by remember { mutableStateOf(books.keys.first()) }
     var expandedBookDropdown by remember { mutableStateOf(false) }
+    var selectedBibleVerses by remember { mutableStateOf<List<BibleVerse>>(emptyList()) }
 
     // States for chapter selection
     val chapters = books[selectedBook] ?: 1
     var selectedChapter by remember { mutableIntStateOf(1) }
     var expandedChapterDropdown by remember { mutableStateOf(false) }
 
+
+
+    selectedBibleVerses = bible.verses.filter { verse ->
+        verse.book_name == selectedBook
+    }
+
+    println("selectedBibleVerses $selectedBibleVerses")
+    selectedBibleVerses = bible.verses.filter { verse ->
+        verse.chapter == selectedChapter
+    }
+
     println("selectedBook $selectedBook")
     println("selectedChapter $selectedChapter")
+
+    println("selectedBibleVerses $selectedBibleVerses")
+
     Column(modifier = Modifier.padding(16.dp)) {
         // Book Dropdown
         Text(text = "Select a Book", style = MaterialTheme.typography.titleMedium)
@@ -114,5 +131,5 @@ fun BookAndChapterSelector(books: Map<String, Int> = oldTestamentBooks) {
 @Preview
 @Composable
 fun BookAndChapterSelectorPreview() {
-    BookAndChapterSelector()
+//    BookAndChapterSelector()
 }
