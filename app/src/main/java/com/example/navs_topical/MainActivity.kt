@@ -26,6 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.navs_topical.ui.components.NavigationComponent
 import com.example.navs_topical.ui.screens.HomeScreen
 import com.example.navs_topical.ui.theme.NavstopicalTheme
 import kotlinx.coroutines.delay
@@ -50,57 +51,11 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp() {
-//    var asvBible = readJsonFile("asv.json");
-//    println(asvBible);
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "splash") {
-        composable("splash") { SplashScreen(navController) }
-        composable("home") { HomeScreen() }
-    }
-}
-
-@Composable
-fun SplashScreen(navController: NavHostController) {
-    LaunchedEffect(key1 = true) {
-        delay(1000) // 3 seconds delay
-        navController.navigate("home") {
-            popUpTo("splash") { inclusive = true }
-        }
-    }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground), // Replace with your logo
-                contentDescription = "App Logo",
-                modifier = Modifier.size(100.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Navs Topical",
-                style = MaterialTheme.typography.headlineLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                )
-            )
-        }
-    }
-}
-
-//@Composable
-//fun HomeScreen() {
-//    Box(
-//        modifier = Modifier.fillMaxSize(),
-//        contentAlignment = Alignment.Center
-//    ) {
-//        Text(
-//            text = "Welcome to the Home Screen!",
-//            style = MaterialTheme.typography.bodyLarge
-//        )
+    NavigationComponent(navController)
+//    NavHost(navController = navController, startDestination = "splash") {
+//        composable("splash") { SplashScreen(navController) }
+//        composable("home") { HomeScreen() }
 //    }
-//}
+}
+
