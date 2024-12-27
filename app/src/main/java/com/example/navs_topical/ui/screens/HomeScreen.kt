@@ -180,6 +180,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 scope = scope,
                 dismissModal = { toggleBottomSheet() },
                 verse = newVerse,
+                bible = asvBible,
                 modifier = Modifier.padding(innerPadding))
         }
         when (selectedTab) {
