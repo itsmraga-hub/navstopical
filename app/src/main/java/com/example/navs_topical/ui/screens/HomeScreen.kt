@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.navs_topical.ui.components.BottomSheetComponent
+import com.example.navs_topical.ui.components.CustomizedBottomAppBar
 import com.example.navs_topical.ui.screens.tabs.ASVBibleScreen
 import com.example.navs_topical.ui.screens.tabs.MyVersesScreen
 import com.example.navs_topical.ui.screens.tabs.SettingsScreen
@@ -73,6 +74,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         showBottomSheet = false
     }
 
+    val selectTab: (index: Int) -> Unit = {i ->
+        selectedTab = i
+    }
+
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     // VerseList()
@@ -99,67 +104,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             ) {
                 val tabs = listOf("My Verses", "TMS", "ASV", "Settings", "More")
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    // Render left tabs
-                    tabs.subList(0, 2).forEachIndexed { index, tab ->
-                        TextButton(
-                            onClick = { selectedTab = index },
-                            colors = ButtonDefaults.textButtonColors(
-                                contentColor = if (selectedTab == index) MaterialTheme.colorScheme.primary else Color.Gray
-                            )
-                        ) {
-                            Text(
-                                text = tab,
-                                textAlign = TextAlign.Center,
-                                color = if (selectedTab == index) MaterialTheme.colorScheme.primary else Color.Gray
-                            )
-                        }
-                    }
-
-                    // Centered "My Verses" tab
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .border(
-                                width = 2.dp,
-                                color = if (selectedTab == 2) MaterialTheme.colorScheme.primary else Color.Gray,
-                                shape = RoundedCornerShape(50)
-                            )
-                            .clickable { selectedTab = 2 }
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
-                        Text(
-                            text = "ASV",
-                            color = if (selectedTab == 2) MaterialTheme.colorScheme.primary else Color.Gray,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                    // Render right tabs
-                    tabs.subList(3, tabs.size).forEachIndexed { index, tab ->
-                        TextButton(
-                            onClick = { selectedTab = index + 3 },
-                            colors = ButtonDefaults.textButtonColors(
-                                contentColor = if (selectedTab == index + 3) MaterialTheme.colorScheme.primary else Color.Gray
-                            )
-                        ) {
-                            Text(
-                                text = tab,
-                                textAlign = TextAlign.Center,
-                                color = if (selectedTab == index + 3) MaterialTheme.colorScheme.primary else Color.Gray
-                            )
-                        }
-
-                    }
-                }
+                CustomizedBottomAppBar(
+                    tabs = tabs,
+                    selectedTab = selectedTab,
+                    selectTab = selectTab
+                )
             }
-
-
-
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -185,16 +135,16 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         }
         when (selectedTab) {
             0 -> {
-                MyVersesScreen(modifier = Modifier.padding(16.dp))
+                MyVersesScreen(modifier = Modifier.padding(top = 64.dp, start = 8.dp, end = 8.dp))
             }
             1 -> {
-                TMSScreen(modifier = Modifier.padding(16.dp))
+                TMSScreen(modifier = Modifier.padding(top = 64.dp, start = 8.dp, end = 8.dp))
             }
             2 -> {
                 ASVBibleScreen(bible = asvBible, modifier = Modifier.padding(top = 64.dp, start = 8.dp, end = 8.dp))
             }
             3 -> {
-                SettingsScreen(modifier = Modifier.padding(16.dp))
+                SettingsScreen(modifier = Modifier.padding(top = 64.dp, start = 8.dp, end = 8.dp))
             }
             4 -> {
                 Text("More")
