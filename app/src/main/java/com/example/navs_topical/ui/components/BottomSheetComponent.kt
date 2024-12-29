@@ -54,13 +54,13 @@ fun BottomSheetComponent(
             }) {
                 Text("Close")
             }
-            BookAndChapterSelector(bible = bible, books = newTestamentBooks + oldTestamentBooks)
+            BookAndChapterSelector(bible = bible, books = oldTestamentBooks + newTestamentBooks)
 //            BookAndChapterSelector(bible = bible, books = oldTestamentBooks)
-            TextField(value = verse.verseTopic, onValueChange = {})
-            TextField(value = verse.verseReference, onValueChange = {})
-            TextField(value = verse.verseContent, onValueChange = {})
-            TextField(value = verse.verseVersion, onValueChange = {})
-            TextField(value = verse.verseTag, onValueChange = {})
+//            TextField(value = verse.verseTopic, onValueChange = {})
+//            TextField(value = verse.verseReference, onValueChange = {})
+//            TextField(value = verse.verseContent, onValueChange = {})
+//            TextField(value = verse.verseVersion, onValueChange = {})
+//            TextField(value = verse.verseTag, onValueChange = {})
         }
     }
 }
