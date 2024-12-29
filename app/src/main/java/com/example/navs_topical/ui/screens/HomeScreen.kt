@@ -185,16 +185,16 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         }
         when (selectedTab) {
             0 -> {
-                MyVersesScreen(modifier = Modifier.padding(16.dp))
+                MyVersesScreen(modifier = Modifier.padding(top = 64.dp, start = 8.dp, end = 8.dp))
             }
             1 -> {
-                TMSScreen(modifier = Modifier.padding(16.dp))
+                TMSScreen(modifier = Modifier.padding(top = 64.dp, start = 8.dp, end = 8.dp))
             }
             2 -> {
                 ASVBibleScreen(bible = asvBible, modifier = Modifier.padding(top = 64.dp, start = 8.dp, end = 8.dp))
             }
             3 -> {
-                SettingsScreen(modifier = Modifier.padding(16.dp))
+                SettingsScreen(modifier = Modifier.padding(top = 64.dp, start = 8.dp, end = 8.dp))
             }
             4 -> {
                 Text("More")
