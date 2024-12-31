@@ -278,11 +278,6 @@ fun MyMemorizedVersesList(verses: List<BibleVerse>, modifier: Modifier = Modifie
     }
 }
 
-//@Composable
-//@Preview
-//fun VerseListPreview() {
-//    VerseList()
-//}
 
 //@Composable
 //@Preview
