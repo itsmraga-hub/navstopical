@@ -2,6 +2,7 @@ package com.example.navs_topical.verses.data
 import android.content.Context
 import kotlinx.serialization.Serializable
 import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 
 
@@ -46,7 +47,23 @@ data class BibleData(
 )
 
 
+data class TMS(
+    val a: List<TMSVerse> = emptyList(),
+    val b: List<TMSVerse> = emptyList(),
+    val c: List<TMSVerse> = emptyList()
+)
 
+data class TMSVerse(
+    val tag: String,
+    val topic: String,
+    val version: String,
+    val book_name: String,
+    val chapter: Int,
+    val verse: Int,
+    val content: String,
+    val background: String,
+    val category: String
+)
 
 
 
@@ -57,6 +74,19 @@ fun readJsonFromAssets(context: Context, fileName: String): String {
 fun parseJsonToModel(jsonString: String): BibleData {
     val gson = Gson()
     return gson.fromJson(jsonString, object : TypeToken<BibleData>() {}.type)
+}
+
+fun parseJsonToModelTMS(json: String): TMS {
+    val gson = Gson()
+    val jsonObject = gson.fromJson(json, JsonObject::class.java)
+
+    // Extract lists dynamically
+    val aList = jsonObject["A"]?.let { gson.fromJson(it, Array<TMSVerse>::class.java).toList() } ?: emptyList()
+    val bList = jsonObject["B"]?.let { gson.fromJson(it, Array<TMSVerse>::class.java).toList() } ?: emptyList()
+    val cList = jsonObject["C"]?.let { gson.fromJson(it, Array<TMSVerse>::class.java).toList() } ?: emptyList()
+
+    return TMS(a = aList, b = bList, c = cList)
+//    return gson.fromJson(jsonString, object : TypeToken<TMS>() {}.type)
 }
 
 fun organizeBooksByTestament(verses: List<BibleVerse>): Map<String, String> {
