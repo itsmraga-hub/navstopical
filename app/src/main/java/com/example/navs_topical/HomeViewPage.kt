@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.navs_topical.ui.theme.NavstopicalTheme
-import com.example.navs_topical.verses.VerseList
 import com.example.navs_topical.verses.data.Verse
 
 @Composable
@@ -27,7 +26,7 @@ fun HomeViewPage() {
                 verseTag = "Tag $it"
             )
         }
-        VerseList(verses = dummyVerses)
+//        VerseList(verses = dummyVerses)
     }
 }
 
