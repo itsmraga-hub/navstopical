@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +36,7 @@ import com.example.navs_topical.verses.data.oldTestamentBooks
 fun BookAndChapterSelector(books: Map<String, Int> = oldTestamentBooks, bible: BibleData) {
     // Books and chapter counts
 //    val books = oldTestamentBooks
+    val context = LocalContext.current
 
     // States for book selection
     var selectedBook by remember { mutableStateOf(books.keys.first()) }
@@ -170,7 +172,10 @@ fun BookAndChapterSelector(books: Map<String, Int> = oldTestamentBooks, bible: B
                     // Process the verse input (range or single verse)
                     val verses = parseVerses(verseInput, selectedBibleVerses)
                     println("verses: $verses")
-
+                    for (verse in verses) {
+                        println("verse: $verse")
+                        saveVerse(context = context, bibleVerse = verse)
+                    }
                     versesList = versesList + verses
                     println("versesList: $versesList")
                     verseInput = "" // Reset the input after adding
