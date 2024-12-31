@@ -97,7 +97,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             ) {
 
                 val tabs = listOf(
-                    CustomTab("My", Icons.Rounded.List),
+                    CustomTab("My Verses", Icons.Rounded.List),
                     CustomTab("TMS", Icons.Default.CheckCircle),
                     CustomTab("ASV", Icons.Rounded.Home),
                     CustomTab("", Icons.Rounded.Settings),
